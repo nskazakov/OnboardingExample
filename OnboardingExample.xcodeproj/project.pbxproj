@@ -17,6 +17,10 @@
 		B0BAD68B26C63C3700433F96 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BAD68A26C63C3700433F96 /* OnboardingView.swift */; };
 		B0DBA64A26C8FB6C00A3A87A /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DBA64926C8FB6C00A3A87A /* UIImage+Ext.swift */; };
 		B0DBA64C26C8FFA300A3A87A /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DBA64B26C8FFA300A3A87A /* Onboarding.swift */; };
+		B0DBA65326C904B900A3A87A /* questions-chat.gif in Resources */ = {isa = PBXBuildFile; fileRef = B0DBA65026C904B900A3A87A /* questions-chat.gif */; };
+		B0DBA65426C904B900A3A87A /* interview.gif in Resources */ = {isa = PBXBuildFile; fileRef = B0DBA65126C904B900A3A87A /* interview.gif */; };
+		B0DBA65526C904B900A3A87A /* code.gif in Resources */ = {isa = PBXBuildFile; fileRef = B0DBA65226C904B900A3A87A /* code.gif */; };
+		B0DBA65726C910B900A3A87A /* OnboardingContentViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DBA65626C910B900A3A87A /* OnboardingContentViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +36,10 @@
 		B0BAD68A26C63C3700433F96 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		B0DBA64926C8FB6C00A3A87A /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		B0DBA64B26C8FFA300A3A87A /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
+		B0DBA65026C904B900A3A87A /* questions-chat.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "questions-chat.gif"; sourceTree = "<group>"; };
+		B0DBA65126C904B900A3A87A /* interview.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = interview.gif; sourceTree = "<group>"; };
+		B0DBA65226C904B900A3A87A /* code.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = code.gif; sourceTree = "<group>"; };
+		B0DBA65626C910B900A3A87A /* OnboardingContentViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContentViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +81,7 @@
 		B0BAD68026C639EA00433F96 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B0DBA64F26C9049B00A3A87A /* Gifs */,
 				B0BAD67226C6398900433F96 /* Main.storyboard */,
 				B0BAD67726C6398C00433F96 /* LaunchScreen.storyboard */,
 				B0BAD67A26C6398C00433F96 /* Info.plist */,
@@ -123,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				B0BAD68A26C63C3700433F96 /* OnboardingView.swift */,
+				B0DBA65626C910B900A3A87A /* OnboardingContentViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -141,6 +151,17 @@
 				B0DBA64926C8FB6C00A3A87A /* UIImage+Ext.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B0DBA64F26C9049B00A3A87A /* Gifs */ = {
+			isa = PBXGroup;
+			children = (
+				B0DBA65226C904B900A3A87A /* code.gif */,
+				B0DBA65126C904B900A3A87A /* interview.gif */,
+				B0DBA65026C904B900A3A87A /* questions-chat.gif */,
+			);
+			name = Gifs;
+			path = gifs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,6 +221,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0DBA65426C904B900A3A87A /* interview.gif in Resources */,
+				B0DBA65526C904B900A3A87A /* code.gif in Resources */,
+				B0DBA65326C904B900A3A87A /* questions-chat.gif in Resources */,
 				B0BAD67926C6398C00433F96 /* LaunchScreen.storyboard in Resources */,
 				B0BAD67626C6398C00433F96 /* Assets.xcassets in Resources */,
 				B0BAD67426C6398900433F96 /* Main.storyboard in Resources */,
@@ -216,6 +240,7 @@
 				B0BAD68926C63C2E00433F96 /* OnboardingModel.swift in Sources */,
 				B0BAD67126C6398900433F96 /* OnboardingController.swift in Sources */,
 				B0BAD66D26C6398900433F96 /* AppDelegate.swift in Sources */,
+				B0DBA65726C910B900A3A87A /* OnboardingContentViewCell.swift in Sources */,
 				B0DBA64C26C8FFA300A3A87A /* Onboarding.swift in Sources */,
 				B0DBA64A26C8FB6C00A3A87A /* UIImage+Ext.swift in Sources */,
 				B0BAD68B26C63C3700433F96 /* OnboardingView.swift in Sources */,
