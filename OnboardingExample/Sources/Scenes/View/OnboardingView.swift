@@ -11,10 +11,27 @@ final class OnboardingView: UIView {
 
     // MARK: - Configuration
 
-    func configureView(with model: Onboarding) {
-        titleLabel.text = model.title
-        imageView.image = UIImage.gifImageWithName(model.imageName)
-        descriptionLabel.text = model.description
+    func configureView(with models: [Onboarding]) {
+        self.models = models
+        pageControl.numberOfPages = models.count
+        pageControl.currentPage = 0
+        selectedIndex = 0
+        collectionView.reloadData()
+    }
+
+    // MARK: - Private properties
+
+    private var models = [Onboarding]()
+    private var selectedIndex = 0 {
+        didSet {
+            let isLastPage = models.count - 1 > selectedIndex
+            buttonView.setTitle(isLastPage
+                                    ? Strings.nextButtonTitle
+                                    : Strings.startButtonTitle, for: .normal)
+            buttonView.backgroundColor = isLastPage
+                ? .systemBlue
+                : .systemGreen
+        }
     }
 
     // MARK: - Views
@@ -22,32 +39,48 @@ final class OnboardingView: UIView {
     private lazy var stackView: UIStackView = {
         let view = UIStackView()
         view.axis = .vertical
-        view.spacing = 16
-
+        view.spacing = Metric.stackViewSpacing
+        view.distribution = .equalSpacing
         view.translatesAutoresizingMaskIntoConstraints = false
 
         return view
     }()
 
-    private lazy var imageView: UIImageView = {
-        let view = UIImageView()
+    private lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = .zero
+
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.backgroundColor = .white
+        view.isPagingEnabled = true
+        view.showsHorizontalScrollIndicator = false
+
+        view.dataSource = self
+        view.delegate = self
+
+        view.register(OnboardingContentViewCell.self,
+                      forCellWithReuseIdentifier: OnboardingContentViewCell.identifier)
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.font = .boldSystemFont(ofSize: 20)
-        label.textColor = .black
-        return label
+    private lazy var pageControl: UIPageControl = {
+        let view = UIPageControl()
+        view.pageIndicatorTintColor = .systemGray5
+        view.currentPageIndicatorTintColor = .systemGray
+
+        return view
     }()
 
-    private lazy var descriptionLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.font = .systemFont(ofSize: 17)
-        label.textColor = .secondaryLabel
-        return label
+    private lazy var buttonView: UIButton = {
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .bold)
+        button.tintColor = .white
+        button.layer.cornerRadius = Metric.buttonHeight / 2
+
+        button.addTarget(self, action: #selector(buttonTappedAction(_:)), for: .touchUpInside)
+        return button
     }()
 
     // MARK: - Initial
@@ -71,15 +104,91 @@ final class OnboardingView: UIView {
     // MARK: - Settings
 
     private func setupHierarchy() {
+        addSubview(collectionView)
         addSubview(stackView)
-        stackView.addArrangedSubview(imageView)
-        stackView.addArrangedSubview(titleLabel)
-        stackView.addArrangedSubview(descriptionLabel)
+        stackView.addArrangedSubview(pageControl)
+        stackView.addArrangedSubview(buttonView)
     }
 
     private func setupLayout() {
-        stackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 40).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 40).isActive = true
+        collectionView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        collectionView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.75).isActive = true
+
+        stackView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: Metric.topOffset).isActive = true
+        stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metric.leftOffset).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Metric.rightOffset).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Metric.bottomOffset).isActive = true
+
+        buttonView.heightAnchor.constraint(equalToConstant: Metric.buttonHeight).isActive = true
+    }
+}
+
+// MARK: - Actions
+
+extension OnboardingView {
+
+    @objc private func buttonTappedAction(_ sender: Any) {
+
+        if models.count - 1 > selectedIndex {
+            collectionView.scrollToItem(at: IndexPath(item: selectedIndex + 1, section: 0),
+                                        at: .centeredHorizontally, animated: true)
+
+            selectedIndex += 1
+            pageControl.currentPage += 1
+        } else {
+            // TODO: - Implement start app
+        }
+    }
+}
+
+// MARK: - UICollectionViewDataSource
+
+extension OnboardingView: UICollectionViewDataSource {
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return models.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OnboardingContentViewCell.identifier, for: indexPath) as? OnboardingContentViewCell else { return UICollectionViewCell() }
+        cell.configureView(with: models[indexPath.row])
+        return cell
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension OnboardingView: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+    }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let newIndexOfPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
+        pageControl.currentPage = newIndexOfPage
+        selectedIndex = newIndexOfPage
+    }
+}
+
+// MARK: - Constants
+
+extension OnboardingView {
+
+    enum Metric {
+        static let buttonHeight: CGFloat = 44
+        static let topOffset: CGFloat = 25
+        static let leftOffset: CGFloat = 40
+        static let rightOffset: CGFloat = -40
+        static let bottomOffset: CGFloat = -50
+
+        static let stackViewSpacing: CGFloat = 16
+    }
+
+    enum Strings {
+        static let nextButtonTitle: String = "Далее"
+        static let startButtonTitle: String = "Начать"
     }
 }

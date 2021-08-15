@@ -32,11 +32,11 @@ final class OnboardingController: UIViewController {
     }
 }
 
+// MARK: - Configurations
+
 private extension OnboardingController {
     func configureView() {
         guard let models = model?.createModels() else { return }
-        models.forEach { [unowned self] model in
-            onboardingView?.configureView(with: model)
-        }
+        onboardingView?.configureView(with: models)
     }
 }
